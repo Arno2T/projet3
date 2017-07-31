@@ -21,11 +21,15 @@ class Router
 	{
 		if (isset($_GET['action']))
 		{
-			if ($_GET['action']=='Posts')
+			if ($_GET['action']=='Posts'&& !isset($_GET['id']))
 		
 			{
 				$this->_ctrlPosts->posts();
 
+			}
+			elseif ($_GET['action']=='Posts'&& $_GET['id']>0)
+			{
+				$this->_ctrlPosts->post($_GET['id']);
 			}
 		}
 		else

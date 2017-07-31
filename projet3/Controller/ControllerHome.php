@@ -1,15 +1,25 @@
 <?php
 
-require 'View/template.php';
+require_once 'Model/PostsManager.php';
+require_once 'View/View.php';
 
 class ControllerHome
 {
 	private $_home;
 
 
+	public function __construct()
+	{
+		$this->_home= new PostsManager();
+	}
+
 	public function home()
 	{
-		$this->_home= require 'View/viewHome.php' ;
+		$home= $this->_home->getAllPosts();
+
+		$view= new View('Home');
+
+		$view->generate(array('home'=>$home));
 	}
 
 }

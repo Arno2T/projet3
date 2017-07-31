@@ -40,11 +40,15 @@ class PostsManager
 
 	// get one post by id
 	public function getPost($idPost)
-	{
-		$req=$this->_bdd->prepare('SELECT title_post as title, content_post as content, date_post FROM Posts WHERE id=:id');
+	{	
+		if (isset($_GET['id']))
+		{
+		$req=$this->_bdd->query('SELECT title_post as title, content_post as content, date_post FROM Posts WHERE id='.$_GET['id']);
 
-		$req->bindValue(':id', $idPost=$_GET['id'], PDO::PARAM_INT);
-		$req->execute();
+		$result= $req->fetch(PDO::FETCH_ASSOC);
+
+		return $result;
+		}
 
 	}
 
@@ -56,6 +60,9 @@ class PostsManager
 	{
 		$req = $this->_bdd->prepare ('INSERT INTO Posts(title_post, content_post, date_post) VALUES (:title, :content, date_post) ');
 		$req->bindValue(':title', $_POST['title'], PDO::PARAM_STRING);
+		$req->bindValue(':content', $_POST['comment'], PDO::PARAM_STRING);
+		
+
 	}
 }
 

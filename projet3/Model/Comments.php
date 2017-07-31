@@ -8,6 +8,20 @@ class Comments
 	private $_id;
 	private $_content;
 	private $_date;
+	private $_idUsers;
+	private $_idPost;
+
+	public function hydrate($datas)
+	{
+		foreach($data as $key => $value)
+		{
+			$method= 'set'.ucfirst($key);
+			if (method_exists($this, $method))
+			{
+				$this->$method($value);
+			}
+		}
+	}
 
 
 	//Setters
@@ -36,6 +50,16 @@ class Comments
 	public function getDate()
 	{
 		return $this->_date;
+	}
+
+	public function getIdUsers()
+	{
+		return $this->_idUsers;
+	}
+
+	public function getIdPosts()
+	{
+		return $this->_idPosts;
 	}
 
 
