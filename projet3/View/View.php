@@ -22,9 +22,14 @@ class View
 		
 		echo $view;
 
+	}
 
-		
+	public function generateAdmin($datas)
+	{
+		$content= $this->generateFile($this->_file, $datas);
+		$view=$this->generateFile('View/templateAdmin.php', array('content'=>$content));
 
+		echo $view;
 	}
 
 	public function generateFile($file, $datas)

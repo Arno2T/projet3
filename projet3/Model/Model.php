@@ -2,8 +2,17 @@
 
 class Model
 {
+	/**
+	* @var   object 		$_bdd	 PDO Object
+	*/
+
 	private $_bdd;
 
+	/**
+	* getBdd()		connexion to database with PDO Object
+	* 
+	* @return $_bdd
+	*/
 
 	public function getBdd()
 	{

@@ -1,6 +1,6 @@
 <?php
 
-require 'Model.php';
+require_once 'Model.php';
 
 class Users
 {
@@ -10,6 +10,7 @@ class Users
 	private $_password;
 	private $_firstName;
 	private $_lastName;
+	private $_role;
 
 
 	//Setters
