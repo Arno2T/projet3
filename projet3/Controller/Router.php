@@ -8,6 +8,7 @@ require_once 'controllerAdmin.php';
 require_once 'controllerPostsManager.php';
 require_once 'controllerWritePost.php';
 require_once 'controllerComments.php';
+require_once 'controllerContact.php';
 require_once 'Model/Session.php';
 
 
@@ -34,6 +35,7 @@ class Router
 		$this->_ctrlPostsManager=new controllerPostsManager();
 		$this->_ctrlWritePosts= new controllerWritePosts();
 		$this->_ctrlComments=new controllerComments();
+		$this->_ctrlContact= new controllerContact();
 		
 
 	}
@@ -102,10 +104,10 @@ class Router
 				}
 				elseif ($_GET['action']=='comment')
 				{
-					if (isset($_GET['submit']) && isset($_GET['id']) && $_GET['id']>0 && $_GET['submit']=='report')
+					if (isset($_GET['submit']) && isset($_GET['idComment']) && $_GET['idComment']>0 && $_GET['submit']=='report')
 					{
-						$this->_ctrlComments->signalComment($_GET['id']);
-						$this->_ctrlOnePost->post($_GET['id']);
+						$this->_ctrlComments->signalComment($_GET['idComment']);
+						$this->_ctrlOnePost->post($_POST['idPost']);
 					}
 					else
 					{
@@ -120,8 +122,18 @@ class Router
 				}
 
 				elseif ($_GET['action']=='contact')
-				{
-					$this->_ctrlPages->contact();
+				{	
+
+					if (isset($_GET['submit']) && $_GET['submit']=='send')
+					{
+						$this->_ctrlContact->send(htmlspecialchars($_POST['subject']), htmlspecialchars($_POST['content']));
+					}
+					else
+					{
+						$this->_ctrlPages->contact();
+					}
+					
+
 				}
 
 				elseif ($_GET['action']=='a2t-admin' && !isset($_GET['module']))
@@ -166,7 +178,6 @@ class Router
 
 					if( isset($_GET['submit']) && $_GET['submit']=='publish')
 					{
-						var_dump('test');
 						$this->_ctrlUsers->checkAdmin();
 						$this->_ctrlWritePosts->newPost(htmlspecialchars($_POST['title']), $_POST['content'], htmlspecialchars($_POST['category']));
 						$this->_ctrlAdmin->admin();

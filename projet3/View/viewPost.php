@@ -13,14 +13,18 @@
 	<?php 
 	foreach($comments as $comment)
 	{?>
-
-	<article class="comments">
+	
+	<div class="container">
+	<article>
 		<p><?php echo $comment['content'] ?></p>
 		<footer><?php echo 'publié le '.$comment['date_com'].' par '.$comment['login'].'<br />'; ?> 
-		<a href=<?php echo '"index.php?action=comment&id='.$comment['id'].'&submit=report"'?>>Signaler ce commentaire</a>
+		<form method="post" action=<?php echo '"index.php?action=comment&id='.$post['id'].'&idComment='.$comment['id'].'&submit=report"'?>>
+			<input type="hidden" name="idPost" value="<?php echo $post['id'] ;?>" />
+			<input type="submit" value="Signaler">
+		</form>
 		</footer>
-
 	</article><!--comments-->
+	</div>
 	<?php
 	} ?>
 

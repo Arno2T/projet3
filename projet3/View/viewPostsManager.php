@@ -1,12 +1,13 @@
 <p><a href="index.php?action=a2t-admin&module=new"> Ajouter un nouvel article </a></p>
 
-	<table>
-		<tr>
-			<th>Titre</th>
-			<th>Catégorie</th>
-			<th>Date</th>
-			<th>Supprimer</th>
-		</tr>
+	<table class="table">
+		
+			<tr>
+				<th>Titre</th>
+				<th>Catégorie</th>
+				<th>Date</th>
+				<th>Supprimer</th>
+			</tr>
 	<?php
 	foreach ($posts as $post) 
 	{?>
@@ -19,6 +20,7 @@
 		</tr>
 	<?php
 	}?>
+		
 	</table>
 
 	

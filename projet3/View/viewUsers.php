@@ -1,5 +1,5 @@
 
-<table>
+<table class="table">
 		<tr>
 			<th>Login</th>
 			<th>Prénom</th>

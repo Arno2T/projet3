@@ -1,4 +1,4 @@
-<table>
+<table class="table">
 	<tr>
 		<th>Commentaires</th>
 		<th>Date</th>

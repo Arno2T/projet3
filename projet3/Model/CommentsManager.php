@@ -32,7 +32,7 @@ class CommentsManager
 
 	public function getAllComments()
 	{
-		$req=$this->_bdd->query('SELECT Comments.id, content_com AS content, date_com, id_users, id_post, moderate, login FROM Comments INNER JOIN Users ON id_users=Users.id ORDER BY moderate DESC');
+		$req=$this->_bdd->query('SELECT Comments.id, content_com AS content, date_com, id_users, id_post, moderate, login FROM Comments INNER JOIN Users ON id_users=Users.id WHERE moderate >0 ORDER BY moderate DESC');
 		
 		return $req;
 	}

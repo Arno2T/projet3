@@ -20,6 +20,7 @@ class controllerOnePost
 		$post= $this->_post->getPost($idPost);		
 		$comments= $this->_comment->getComments($idPost);
 		
+		
 
 		// generate viewPost.php 
 		$view =new View('Post');
