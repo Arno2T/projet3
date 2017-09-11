@@ -33,7 +33,7 @@ class PostsManager
 
 	public function getAllPosts()
 	{
-		$req=$this->_bdd->query('SELECT id, title_post AS title, content_post AS content, date_post, category FROM Posts ORDER BY id DESC');
+		$req=$this->_bdd->query('SELECT id, title_post AS title, content_post AS content, DATE_FORMAT(date_post, "%d/%m/%Y %Hh%imin%ss") AS date_post, category FROM Posts ORDER BY id DESC');
 
 		return $req;
 	}
@@ -41,7 +41,7 @@ class PostsManager
 	// get all posts by category
 	public function getAllPostsByCat($category)
 	{
-		$req=$this->_bdd->prepare('SELECT id, title_post as title, content_post as content, date_post, category FROM Posts WHERE category=:category ORDER BY id DESC');
+		$req=$this->_bdd->prepare('SELECT id, title_post AS title, content_post AS content, DATE_FORMAT(date_post, "%d/%m/%Y %Hh%imin%ss") AS date_post, category FROM Posts WHERE category=:category ORDER BY id DESC');
 		$req->bindValue(':category', $category, PDO::PARAM_STR);
 		$req->execute();
 
@@ -54,7 +54,7 @@ class PostsManager
 	{	
 		if (isset($_GET['id']))
 		{
-		$req=$this->_bdd->query('SELECT id, title_post as title, content_post as content, date_post FROM Posts WHERE id='.$_GET['id']);
+		$req=$this->_bdd->query('SELECT id, title_post AS title, content_post AS content, DATE_FORMAT(date_post, "%d/%m/%Y %Hh%imin%ss") AS date_post FROM Posts WHERE id='.$_GET['id']);
 
 		$result= $req->fetch(PDO::FETCH_ASSOC);
 

@@ -25,14 +25,14 @@ class CommentsManager
 	//get all comments from idPost
 	public function getComments($idPost)
 	{
-		$req=$this->_bdd->prepare('SELECT Comments.id, content_com AS content, date_com, id_users, id_post, moderate, login FROM Comments INNER JOIN Users ON id_users=Users.id WHERE id_post=? ORDER BY id DESC');
+		$req=$this->_bdd->prepare('SELECT Comments.id, content_com AS content, DATE_FORMAT(date_com, "%d/%m/%Y %Hh%imin%ss") AS date_com, id_users, id_post, moderate, login FROM Comments INNER JOIN Users ON id_users=Users.id WHERE id_post=? ORDER BY id DESC');
 		$req->execute(array($idPost));
 		return $req;
 	}
 
 	public function getAllComments()
 	{
-		$req=$this->_bdd->query('SELECT Comments.id, content_com AS content, date_com, id_users, id_post, moderate, login FROM Comments INNER JOIN Users ON id_users=Users.id WHERE moderate >0 ORDER BY moderate DESC');
+		$req=$this->_bdd->query('SELECT Comments.id, content_com AS content, DATE_FORMAT(date_com, "%d/%m/%Y %Hh%imin%ss") AS date_com, id_users, id_post, moderate, login FROM Comments INNER JOIN Users ON id_users=Users.id WHERE moderate >0 ORDER BY moderate DESC');
 		
 		return $req;
 	}
@@ -40,7 +40,7 @@ class CommentsManager
 	//get a comment from idComment
 	public function getComment($idComment)
 	{
-		$req=$this->_bdd->prepare('SELECT id, content_com AS content, date_com, id_users, id_post, moderate FROM Comments WHERE id=:idComment');
+		$req=$this->_bdd->prepare('SELECT id, content_com AS content, DATE_FORMAT(date_com, "%d/%m/%Y %Hh%imin%ss") AS date_com, id_users, id_post, moderate FROM Comments WHERE id=:idComment');
 		$req->bindValue(':idComment', $idComment, PDO::PARAM_INT);
 		$req->execute();
 		$data=$req->fetch();

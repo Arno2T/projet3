@@ -36,6 +36,7 @@
  hr {
     display: block;
     height: 1px;
+    width: 90%;
     border: 0;
     border-top: 1px solid #ccc;
     margin: 1em 0;
@@ -83,7 +84,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .navbar-default {
-	background-color: transparent;
+	background-color: rgba(246, 246, 246, 0.85);
 	border-color: transparent;
 }
 
@@ -145,6 +146,16 @@ h1, h2, h3, h4, h5, h6 {
 	color: black;
 }
 
+#comment{
+	font-size: 12px;
+}
+
+.date
+{
+	text-align: right;
+	font-size: 14px;
+	font-style: italic;
+}
 
 
 #headerwrap {

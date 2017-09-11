@@ -32,7 +32,7 @@
 		      <div class="navbar-collapse collapse">
 		      	 
 			    <ul class="nav navbar-nav navbar-right">
-			  	  <li class="active"><a href="index.php">Accueil</a></li>
+			  	  <li><a href="index.php">Accueil</a></li>
 				  <li><a href="index.php?action=Posts">Episodes</a></li>
 				  <li><a href="index.php?action=Actualities">Actualités</a></li>
 				  <li><a href="index.php?action=contact">Contact</a></li>
@@ -93,5 +93,6 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="Content/assets/js/bootstrap.min.js"></script> 
+    <script type="text/javascript" src="Content/js/confirm.js"></script>
 	</body>
 </html>

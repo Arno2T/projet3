@@ -20,10 +20,11 @@
 		  <div class="row">
 		  	<div class="col-lg-6 col-lg-offset-3">
 			<h2>Inscrivez-vous</h2>
+	
 			<form method="post" action="index.php?action=register">
 				<p><label for="login">Pseudo: </label><input type="text" name="login" id="login" required /></p>
 				<p><label for="email">Email: </label><input type="text" name="email" id="email" required /></p>
-				<p><label for="password">Mot de passe: </label><input type="password" name="password" id="password" required /></p>
+				<p><label for="password">Mot de passe: </label><input type="password" name="password" id="password" required /></p><div id="verif"></div>
 				<p><label for="password2">Confirmation mot de passe: </label><input type="password" name="password2" id="password2" required /></p>
 				<p><label for="lastName">Nom: </label><input type="text" name="lastName" id="lastName" required/></p>
 				<p><label for="firstName">Prénom: </label><input type="text" name="firstName" id="firstName" required /></p>
@@ -34,5 +35,6 @@
 			</div>
 		</div>
 	</div>
+	<script type="text/javascript" src="Content/js/register.js"></script>
 	</body>
 </html>

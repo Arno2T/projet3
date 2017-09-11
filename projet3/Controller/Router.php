@@ -53,7 +53,7 @@ class Router
 			{
 				
 				
-				$this->_ctrlUsers->user(htmlspecialchars($_POST['login']), htmlspecialchars($_POST['password']), $_POST['firstName'], htmlspecialchars($_POST['lastName']), htmlspecialchars($_POST['email']));
+				$this->_ctrlUsers->user(htmlspecialchars($_POST['login']), htmlspecialchars($_POST['password']), $_POST['password2'], $_POST['firstName'], htmlspecialchars($_POST['lastName']), htmlspecialchars($_POST['email']));
 				
 				
 				require 'register.php';

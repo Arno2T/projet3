@@ -16,7 +16,7 @@ class controllerUsers
 		$this->_session= new Session();
 	}
 
-	public function user($login, $password, $firstName, $lastName, $email)
+	public function user($login, $password, $passwordVerif, $firstName, $lastName, $email)
 	{	
 		if (empty($login) || empty($password) || empty($firstName) || empty($lastName) || empty($email)) 
 		{
@@ -32,6 +32,10 @@ class controllerUsers
 			elseif ($check['email'] == $_POST['email'])
 			{
 				echo 'Ce compte existe déjà';
+			}
+			elseif ($password!==$passwordVerif)
+			{
+				echo 'Les mots de passe sont différents'; 
 			}
 			else
 			{

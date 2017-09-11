@@ -16,7 +16,7 @@
 			<td><?php echo '<a href="index.php?action=a2t-admin&module=Posts&id='.$post['id'].'">'?><?php echo $post['title']; ?></a></td>
 			<td><?php echo $post['category']; ?></td>
 			<td> <?php echo $post['date_post']; ?></td>
-			<td><?php echo '<a href="index.php?action=a2t-admin&module=Posts&id='.$post['id'].'&submit=delete">'?> Supprimer l'article </a></td>
+			<td><?php echo '<a class="delete" href="index.php?action=a2t-admin&module=Posts&id='.$post['id'].'&submit=delete">'?> Supprimer l'article </a></td>
 		</tr>
 	<?php
 	}?>

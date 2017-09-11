@@ -14,7 +14,7 @@
 		<td><?php echo $comment['date_com']; ?></td>
 		<td><?php echo $comment['login']; ?></td>
 		<td><?php echo$comment['moderate'];?></td>
-		<td><?php echo '<a href="index.php?action=a2t-admin&module=moderate&id='.$comment['id'].'&submit=delete">Supprimer le commentaire</a>'?></td>
+		<td><?php echo '<a class="delete" href="index.php?action=a2t-admin&module=moderate&id='.$comment['id'].'&submit=delete">Supprimer le commentaire</a>'?></td>
 	</tr>
 	<?php
 	}?>
