@@ -14,24 +14,62 @@ class controllerOnePost
 		$this->_comment=new commentsManager();
 	}
 
-	//Select post from id
+	// Displays a post and its comments
 	public function post($idPost)
 	{
-		$post= $this->_post->getPost($idPost);		
+		
+		$posts=$this->_post->getPost($idPost);	
 		$comments= $this->_comment->getComments($idPost);
-		
-		
 
-		// generate viewPost.php 
-		$view =new View('Post');
-		$view->generate(array('post'=>$post, 'comments'=> $comments));
+		if (isset($_SESSION['login']))
+		{
+				// generate viewPost.php 
+			if (!isset($comments))
+			{
+				$comments=[];
+				$view =new View('Post');
+				$view->generate(array('posts'=>$posts, 'comments'=>$comments));
+			}
+			else
+			{
+				$view= new View('Post');
+				$view->generate(array('posts'=>$posts, 'comments'=>$comments));
+			}
+		}
+		else
+		{
+			if (!isset($comments))
+			{
+				$comments=[];
+				$view =new View('PostUnlog');
+				$view->generate(array('posts'=>$posts, 'comments'=>$comments));
+			}
+			else
+			{
+				$view= new View('PostUnlog');
+				$view->generate(array('posts'=>$posts, 'comments'=>$comments));
+			}	
+		}
+
+		
+		
+		
 
 	}
 
+	// allows to comment a post
 	public function comment($author, $content, $idPost, $idUser)
 	{
-		$this->_comment->addComments($author, $content, $idPost, $idUser);
+		if(!isset($author) || !isset($content))
+		{
+			echo '<div class="alert">Les mots de passe sont différents</div>'; 
+		}
+		else
+		{
+			$comment=$this->_comment->datasComment($author, $content, $idPost, $idUser);
+			$this->_comment->addComments($comment);
+		}
 
-		//$this->post($idPost);
+		
 	}
 }

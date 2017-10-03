@@ -14,7 +14,7 @@
 <form method="post" action=<?php echo '"index.php?action=a2t-admin&module='.$module.$id.'&submit=publish"'?> >
 	
 	<p><label for="title">Titre de l'article: </label><input type="text" name="title" id="title" value="<?php echo $title; ?>" required/></p>
-	<p><label for="content">Texte de l'article: <br /></label><textarea id="textarea" name="content" required > <?php echo $content; ?></textarea></p>
+	<p><label for="content">Texte de l'article: <br /></label><textarea id="textarea" name="content" rows="15" cols="50" required > <?php echo $content; ?></textarea></p>
 	<p><label for="category">Dans quelle catégorie souhaitez-vous publier votre article?</label></p>
 	<p><select name="category" id="category">
 		<option value="Accueil"> Accueil </option>

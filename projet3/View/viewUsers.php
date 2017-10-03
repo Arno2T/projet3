@@ -12,12 +12,12 @@
 	{?>
 		
 		<tr>
-			<td><?php echo '<a href="index.php?action=a2t-admin&module=users&id='.$user['id'].'">'?><?php echo $user['login']; ?></a></td>
-			<td><?php echo $user['firstName']; ?></td>
-			<td> <?php echo $user['lastName']; ?></td>
-			<td> <?php echo $user['email']; ?></td>
-			<td> <?php echo $user['role']; ?></td>
-			<td><?php echo '<a class="delete" href="index.php?action=a2t-admin&module=users&id='.$user['id'].'&submit=delete">'?>Supprimer l'utilisateur</a></td>
+			<td><?php echo '<a href="index.php?action=a2t-admin&module=users&id='.$user->getId().'">'?><?php echo $user->getLogin(); ?></a></td>
+			<td><?php echo $user->getFirstName(); ?></td>
+			<td> <?php echo $user->getLastName(); ?></td>
+			<td> <?php echo $user->getEmail(); ?></td>
+			<td> <?php echo $user->getRole(); ?></td>
+			<td><?php echo '<a class="delete" href="index.php?action=a2t-admin&module=users&id='.$user->getId().'&submit=delete">'?>Supprimer l'utilisateur</a></td>
 		</tr>
 	<?php
 	}?>

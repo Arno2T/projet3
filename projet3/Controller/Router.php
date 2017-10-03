@@ -9,7 +9,7 @@ require_once 'controllerPostsManager.php';
 require_once 'controllerWritePost.php';
 require_once 'controllerComments.php';
 require_once 'controllerContact.php';
-require_once 'Model/Session.php';
+
 
 
 class Router
@@ -22,7 +22,7 @@ class Router
 	private $_ctrlPostsManager;
 	private $_ctrlWritePosts;
 	private $_ctrlComments;
-	private $_session;
+	private $_ctrlPages;
 	
 
 	public function __construct()
@@ -42,67 +42,70 @@ class Router
 
 
 	public function requestRouter()
-	{
+	{	
+		$this->_ctrlUsers->showAdmin();
+		$this->_ctrlUsers->showLogOut();
 
-		
 		
 		if (isset($_GET['action']))
 		{ 
-
+			//---- REGISTER ----//
 			if ($_GET['action']=='register')
 			{
 				
-				
-				$this->_ctrlUsers->user(htmlspecialchars($_POST['login']), htmlspecialchars($_POST['password']), $_POST['password2'], $_POST['firstName'], htmlspecialchars($_POST['lastName']), htmlspecialchars($_POST['email']));
+				$this->_ctrlUsers->user(htmlspecialchars($_POST['login']), htmlspecialchars($_POST['password']), $_POST['password2'], htmlspecialchars($_POST['firstName']), htmlspecialchars($_POST['lastName']), htmlspecialchars($_POST['email']));
 				
 				
 				require 'register.php';
 			}
-
-			elseif ($_GET['action'] == 'connexion')
+			//---- CONNEXION ----//
+			elseif($_GET['action']=='connexion')
 			{
-					
-
+				if(isset($_GET['submit']) && $_GET['submit']=='connexion')
+				{
 					$check=$this->_ctrlUsers->checkConnexion(htmlspecialchars($_POST['login']));
-					
-					if ($check==true)
-					{
-						$this->_ctrlPages->home();
-						
-					}
-					else
-					{	
-						require 'connexion.php';
-					}
+						if($check==true)
+						{
+							$this->_ctrlPosts->posts();
+						}
+						else
+						{
+							$this->_ctrlPages->connexion();
+						}
+				}
+				else
+				{
+					$this->_ctrlPages->connexion();
+				}
+				
 			}
-
+			
+			//---- logout ----//
 			elseif ($_GET['action'] == 'logout')
 			{
 				$this->_ctrlUsers->userLogout();
-				require 'connexion.php';
-			}
-
-			elseif (!isset($_SESSION['login']))
-			{ 
-				require 'connexion.php';
+				$this->_ctrlUsers->showAdmin();
+				$this->_ctrlUsers->showLogOut();
+				$this->_ctrlPages->home();
+				
 			}
 
 			else
 			{
-				
-			
+				//---- POSTS ----//
+
 				if ($_GET['action']=='Posts'&& !isset($_GET['id']))
 			
 				{
-					$this->_ctrlPosts->posts();
+					$this->_ctrlPosts->posts(); // show all posts
 
 				}
 				elseif ($_GET['action']=='Posts'&& $_GET['id']>0)
 				{
-					$this->_ctrlOnePost->post($_GET['id']);
+					$this->_ctrlOnePost->post($_GET['id']); // show a post
 
 				}
-				elseif ($_GET['action']=='comment')
+				elseif ($_GET['action']=='comment') // comment a post 
 				{
 					if (isset($_GET['submit']) && isset($_GET['idComment']) && $_GET['idComment']>0 && $_GET['submit']=='report')
 					{
@@ -111,22 +114,24 @@ class Router
 					}
 					else
 					{
+
 					$this->_ctrlOnePost->comment(htmlspecialchars($_POST['login']), htmlspecialchars($_POST['content']), $_POST['idPost'], $_POST['idUser']);
 					$this->_ctrlOnePost->post($_POST['idPost']);
 					}
 				}
-
+				//---- ACTUALITES ----//
 				elseif ($_GET['action']=='Actualities')
 				{
 					$this->_ctrlPages->news();
 				}
-
+				//---- CONTACT ----//
 				elseif ($_GET['action']=='contact')
 				{	
 
 					if (isset($_GET['submit']) && $_GET['submit']=='send')
 					{
 						$this->_ctrlContact->send(htmlspecialchars($_POST['subject']), htmlspecialchars($_POST['content']));
+						$this->_ctrlPages->contact();
 					}
 					else
 					{
@@ -135,30 +140,32 @@ class Router
 					
 
 				}
-
+		//--------  ADMIN  --------- //
 				elseif ($_GET['action']=='a2t-admin' && !isset($_GET['module']))
 				{
 					$this->_ctrlUsers->checkAdmin();
 					$this->_ctrlAdmin->admin();
 
 				}
+
+				//---- POSTSMANAGER ----//
 				elseif ($_GET['action']=='a2t-admin' && $_GET['module']=='Posts' && !isset($_GET['id']))
 				{	
 
-						$this->_ctrlPostsManager->postManager();
+						$this->_ctrlPostsManager->postManager(); //show all post
 
 				}
-				
+
 				elseif ($_GET['action']=='a2t-admin' &&$_GET['module']=='Posts' && $_GET['id']>0)
-				{
+				{	// Update a post
 					if(isset($_GET['submit']) && $_GET['submit']=='publish')
 					{
 						$this->_ctrlUsers->checkAdmin();
-						$this->_ctrlWritePosts->updatePost(htmlspecialchars($_POST['title']), $_POST['content'], htmlspecialchars($_POST['category']), $_GET['id']);
+						$this->_ctrlWritePosts->updatePost($_GET['id'], htmlspecialchars($_POST['title']), $_POST['content'], htmlspecialchars($_POST['category']));
 						$this->_ctrlPostsManager->postManager();
 					}
 				
-
+					// delete a post
 					elseif(isset($_GET['submit']) && $_GET['submit']=='delete')
 					{
 						$this->_ctrlUsers->checkAdmin();
@@ -172,7 +179,7 @@ class Router
 
 					
 				}
-
+				// Write a new post
 				elseif ($_GET['action']=='a2t-admin' && $_GET['module']=='new')
 				{
 
@@ -187,21 +194,21 @@ class Router
 						$this->_ctrlWritePosts->writeNewPost();
 					}
 				}
-
+				//--- USERMANAGER ---//
 				elseif($_GET['action']=='a2t-admin' && $_GET['module']=='users' && !isset($_GET['id']))
 				{
-					$this->_ctrlUsers->userManager();
+					$this->_ctrlUsers->userManager(); // show all users
 				}
 				elseif($_GET['action']=='a2t-admin' && $_GET['module']=='users' && $_GET['id']>0)
 				{
-					if(isset($_GET['submit']) && $_GET['submit']=='update')
+					if(isset($_GET['submit']) && $_GET['submit']=='update') // update an user
 					{
 						$this->_ctrlUsers->checkAdmin();
-						$this->_ctrlUsers->updateUser($_POST['role'], $_GET['id']);
+						$this->_ctrlUsers->updateUser($_GET['id'], $_POST['role']);
 						$this->_ctrlUsers->userManager();
 					}
 
-					elseif(isset($_GET['submit']) && $_GET['submit']=='delete')
+					elseif(isset($_GET['submit']) && $_GET['submit']=='delete') //delete user
 					{
 						$this->_ctrlUsers->checkAdmin();
 						$this->_ctrlUsers->deleteUser($_GET['id']);
@@ -213,7 +220,7 @@ class Router
 					}
 					
 				}
-				elseif($_GET['action']=='a2t-admin' && $_GET['module']=='moderate')
+				elseif($_GET['action']=='a2t-admin' && $_GET['module']=='moderate') //moderate comments
 				{
 					if(isset($_GET['id']) && isset($_GET['submit']) && $_GET['id']>0 && $_GET['submit']=='delete')
 					{
@@ -231,18 +238,10 @@ class Router
 			}
 		}
 
-			else
+			else //if $_GET['action'] is not setted
 			{
-				if (isset($_SESSION['login']))
-				{
-					$this->_ctrlPages->home();		
-
-				}
-				else
-				{ 
-				require 'connexion.php';
-				}
-					
+				
+					$this->_ctrlPages->home();	//displays HomePage	
 			}
 		
 	}

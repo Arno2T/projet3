@@ -7,27 +7,40 @@ class Posts
 	private $_title;
 	private $_content;
 	private $_date;
+	private $_idUser;
+	private $_category;
 
 
-	public function __construct($data)
+	public function __construct($datas)
 	{
-		$this->hydrate($data);
+		$this->hydrate($datas);
 	}
 
-	public function hydrate(array($data))
+	public function hydrate($datas)
 	{
-		foreach ($data as $key => $value)
+		foreach($datas as $key=>$value)
 		{
-			$method= 'set'.ucfirst($key);
+			$method='set'.ucfirst($key);
 
-			if (method_exists($this, $method))
+			if(method_exists($this, $method))
 			{
 				$this->$method($value);
 			}
 		}
 	}
 
+	public function getResume()
+	{
+		return substr($this->getContent(), 0, 500);
+	}
+
 	//Setters
+
+	public function setId($id)
+	{
+		$id= (int) $id;
+		$this->_id=$id;
+	}
 
 	public function setTitle($title)
 	{
@@ -52,6 +65,16 @@ class Posts
 		$this->_date = $date;
 	}
 
+	public function setIdUser($idUser)
+	{	$idUser= (int) $idUser;
+		$this->_idUser= $idUser;
+	}
+
+	public function setCategory($category)
+	{
+		$this->_category=$category;
+	}
+
 
 	//Getters
 
@@ -73,5 +96,15 @@ class Posts
 	public function getDate()
 	{
 		return $this->_date;
+	}
+
+	public function getIdUser()
+	{
+		return $this->_idUser;
+	}
+
+	public function getCategory()
+	{
+		return $this->_category;
 	}
 }

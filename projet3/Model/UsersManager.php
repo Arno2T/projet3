@@ -1,6 +1,7 @@
 <?php
 
 require_once 'Model.php';
+require_once 'Users.php';
 
 class usersManager
 {
@@ -19,8 +20,9 @@ class usersManager
 	}
 
 
-	
+	//---- READ ----- //
 
+	//counts number of users
 	public function countUsers()
 	{
 		$req=$this->_bdd->query('SELECT Count(*) AS nbUsers From Users');
@@ -31,79 +33,116 @@ class usersManager
 		return $nbUsers;
 	}
 
-	// select All users
+	// selects All users
 
 	public function getAllUsers()
 	{
 		$req= $this->_bdd->query('SELECT id, login, first_name as firstName, last_name as lastName, email, role FROM Users');
-		return $req;
+
+		while($datas= $req->fetch(PDO::FETCH_ASSOC))
+			{
+				$users[]=new Users($datas);
+			}
+		return $users;
 
 	}
 
-	public function checkUser($login)
+	// selects user from login
+	public function datasCheck($login)
+	{
+		$datas=array('login'=>$login);
+		$user= new Users($datas);
+		return $user;
+	}
+	public function checkUser(Users $user)
 	{
 
 		$req= $this->_bdd->prepare('SELECT id, login, password, email, role FROM Users WHERE login=:login');
-		$req->bindValue(':login', $login, PDO::PARAM_STR);
+		$req->bindValue(':login', $user->getLogin(), PDO::PARAM_STR);
 		$req->execute();
-		$data=$req->fetch();
+		$data=$req->fetch(PDO::FETCH_ASSOC);
 		
 		return $data;
 		
 
 	}
 
-	// select one user from id
+	// selects one user from id
 	public function getUser($idUser)
 	{
-		$req= $this->_bdd->prepare('SELECT id, login, email, first_name AS firstName, last_name AS lastName, role FROM Users WHERE id=:idUser');
-		$req->bindValue(':idUser', $idUser, PDO::PARAM_INT);
-		$req->execute();
-		$data=$req->fetch();
+		$idUser=(int) $idUser;
+		$req= $this->_bdd->query('SELECT id, login, email, first_name AS firstName, last_name AS lastName, role FROM Users WHERE id='.$idUser);
+		$datas=$req->fetch(PDO::FETCH_ASSOC);
 
-		return $data;
+		return new Users($datas);
 
 	}
 
-	//Create
+	//---- CREATE ----//
 
-
-	public function addUser($login, $password, $firstName, $lastName, $email)
+	// get $_POST datas' user
+	public function datasUser($login, $password, $firstName, $lastName, $email)
 	{
-		
-		$securePassword= password_hash($password, PASSWORD_DEFAULT);
+		$securePassword= password_hash($password, PASSWORD_DEFAULT); //hash a password
+		$datas=(array('login'=>$login, 'password'=>$securePassword, 'firstName'=>$firstName, 'lastName'=>$lastName, 'email'=>$email));
+		$user=new Users($datas);
+		return $user;	
+
+	}
+
+	// add an user
+	public function addUser(Users $user)
+	{	
 
 		$req= $this->_bdd->prepare('INSERT INTO Users(login, password, first_name, last_name, email) VALUES (:login, :password, :firstName, :lastName, :email)');
-		$req->bindValue(':login', $login, PDO::PARAM_STR);
-		$req->bindValue(':password',$securePassword, PDO::PARAM_STR);
-		$req->bindValue(':firstName',$firstName, PDO::PARAM_STR);
-		$req->bindValue(':lastName', $lastName, PDO::PARAM_STR);
-		$req->bindValue(':email', $email, PDO::PARAM_STR);
+		$req->bindValue(':login', $user->getLogin(), PDO::PARAM_STR);
+		$req->bindValue(':password',$user->getPassword(), PDO::PARAM_STR);
+		$req->bindValue(':firstName',$user->getFirstName(), PDO::PARAM_STR);
+		$req->bindValue(':lastName', $user->getlastName(), PDO::PARAM_STR);
+		$req->bindValue(':email', $user->getEmail(), PDO::PARAM_STR);
 		
 		$result=$req->execute();
 		return $result;
 		
 	}
 
-	//UPDATE
+	//---- UPDATE ----//
 
-	public function updateUser($role, $idUser)
+	//updates user's role from $idUser
+	//public function updateUser($role, $idUser)
+	public function datasUpdate($id, $role)
+	{
+		$datas=array('id'=>$id, 'role'=>$role);
+		$user= new Users($datas);
+		return $user;
+	}
+
+
+	public function updateUser(Users $user)
 	{
 		$req=$this->_bdd->prepare('UPDATE Users SET role=:role WHERE id=:id');
-		$req->bindValue(':role', $role, PDO::PARAM_STR);
-		$req->bindValue(':id', $idUser, PDO::PARAM_INT);
+		$req->bindValue(':role', $user->getRole(), PDO::PARAM_STR);
+		$req->bindValue(':id', $user->getId(), PDO::PARAM_INT);
 		$req->execute();
 
 		return $req;
 	}
 
 
-	//DELETE
+	//---- DELETE ----//
 
-	public function deleteUser($idUser)
+	//deletes user from $idUser
+	public function datasDelete($idUser)
+	{
+		$datas=array('id'=>$idUser);
+		$user= new Users($datas);
+		return $user;
+	}
+
+	public function deleteUser(Users $user)
 	{
 		$req=$this->_bdd->prepare('DELETE FROM Users WHERE id=:idUser');
-		$req->bindValue(':idUser', $idUser, PDO::PARAM_INT);
+		$req->bindValue(':idUser', $user->getId(), PDO::PARAM_INT);
 		$req->execute();
 	}
 

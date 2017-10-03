@@ -5,39 +5,48 @@ require_once 'View/View.php';
 
 class ControllerPages
 {
-	private $_home;
-	private $_news;
-	private $_contact;
+	private $_pages;
+	
 
 
 	public function __construct()
 	{
-		$this->_home= new PostsManager();
-		$this->_news= new PostsManager();
-		$this->_contact= new PostsManager();
+		$this->_pages= new PostsManager();
+		
 	}
 
+	//dislays all posts for Homepage
 	public function home()
 	{
-		$posts= $this->_home->getAllPostsByCat('Accueil');
+		$posts= $this->_pages->getAllPostsByCat('Accueil');
 
 		$view= new View('Home');
 
 		$view->generate(array('posts'=>$posts));
 	}
 
+	//  displays all posts for Actualites page
 	public function news()
 	{
-		$posts= $this->_news->getAllPostsByCat('Actualites');
+		$posts= $this->_pages->getAllPostsByCat('Actualites');
 
 		$view= new View('News');
 		$view->generate(array('posts'=>$posts));
 	}
 
+	//displays contact's form
 	public function contact()
 	{
 		$posts="";
 		$view= new View('Contact');
+		$view->generate(array('posts'=>$posts));
+
+	}
+
+	public function connexion()
+	{	
+		$posts="";
+		$view= new View('connexion');
 		$view->generate(array('posts'=>$posts));
 
 	}

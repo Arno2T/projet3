@@ -1,6 +1,6 @@
 var delElts= document.getElementsByClassName("delete");
 
-// delElts is an HTMLCollection. 
+// delElts is an HTMLCollection. Have to use [].forEach.call() .
 
 [].forEach.call(delElts, function(delElt){
 

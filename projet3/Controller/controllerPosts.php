@@ -16,7 +16,7 @@ class controllerPosts
 		
 	}
 
-	//select and dipslay all posts
+	//select and dipslays all posts for Episode page 
 	public function posts()
 	{
 		$posts= $this->_post->getAllPostsByCat('Episode');

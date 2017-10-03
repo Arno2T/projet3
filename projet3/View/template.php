@@ -36,6 +36,7 @@
 				  <li><a href="index.php?action=Posts">Episodes</a></li>
 				  <li><a href="index.php?action=Actualities">Actualités</a></li>
 				  <li><a href="index.php?action=contact">Contact</a></li>
+				  <li><a href="index.php?action=connexion">Connexion</a></li>
 				
 			    </ul>
 			  </div><!--/.nav-collapse -->
@@ -72,7 +73,7 @@
 					<?php echo $_SESSION['adminLink']; ?>	 
 					</div>
 					<div class=" col-lg-2">
-						<a href="index.php?action=logout">Déconnexion</a>
+						<?php echo $_SESSION['logOutLink']; ?>
 					</div>
 				</div>
 				<div class="row">

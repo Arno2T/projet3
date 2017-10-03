@@ -2,11 +2,11 @@
 
 	<article id="post">
 		<header>
-			<?php echo $post['title']  ?>
+			<?php echo $post->getTitle();  ?>
 		</header>
-		<p><? echo $post['content'] ?></p>
+		<p><? echo $post->getContent(); ?></p>
 		<footer>
-			<?php echo '<time>'.$post['date_post'].'</time>' ?>
+			<?php echo '<time>'.$post->getDate().'</time>' ?>
 		</footer>
 	</article><!--post-->
 
@@ -15,8 +15,8 @@
 	{?>
 
 	<article class="comments">
-		<p><?php echo $comment['content'] ?></p>
-		<footer><?php echo 'publié le'.$comment['date_com'].'par '.$user['login']; ?> 
+		<p><?php echo $comment->getContent() ?></p>
+		<footer><?php echo 'publié le'.$comment->getDate().'par '.$user['login']; ?> 
 		</footer>
 
 	</article><!--comments-->

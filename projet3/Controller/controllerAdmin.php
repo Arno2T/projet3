@@ -18,6 +18,8 @@ class controllerAdmin
 
 	}
 
+
+	// generate Admin's home
 	public function admin()
 	{
 		$nbUsers=$this->_users->countUsers();

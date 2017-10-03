@@ -14,7 +14,7 @@ class controllerPostsManager
 	}
 
 	
-
+	// Displays all posts for post Manager page
 	public function postManager()
 	{
 		$posts=$this->_post->getAllPosts();
@@ -23,8 +23,10 @@ class controllerPostsManager
 		$view->generateAdmin(array('posts'=>$posts));
 	}
 
+	// allows to delete a post
 	public function deletePost($idPost)
 	{
-		$this->_post->deletePost($idPost);
+		$datas= $this->_post->datasDelete($idPost);
+		$this->_post->deletePost($datas);
 	}
 }

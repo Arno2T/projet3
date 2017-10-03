@@ -1,5 +1,4 @@
-
-	<article id="post">
+<article id="post">
 		
 		<?php foreach($posts as $post)
 			{?>
@@ -36,16 +35,5 @@
 	
 	<?php
 	} ?>
-
-	<form method="post" action="index.php?action=comment&id=<?php echo $post->getId() ;?>" >
-		<p><label>Pseudo: </label><br/><input id="login" name="login" type="text" value=<?php echo $_SESSION['login']; ?> required /></p>
-		<p><label>Commentaire: </label><br/>
-			<textarea id="comment" name="content" rows="10" cols="50" required=""></textarea></p>
-		<p><input type="submit" value="Commenter" /></p>
-		<p><input type="hidden" name="idPost" value="<?php echo $post->getId() ;?>" /></p>
-		<p><input type="hidden" name="idUser" value="<?php echo $_SESSION['id'] ;?>" /></p>
-	</form>
+		<p>Pour laisser un commentaire, veuillez vous <a href="index.php?action=connexion">identifier</a></p>
 	
-
-
-

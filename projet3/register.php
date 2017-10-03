@@ -20,7 +20,7 @@
 		  <div class="row">
 		  	<div class="col-lg-6 col-lg-offset-3">
 			<h2>Inscrivez-vous</h2>
-	
+			
 			<form method="post" action="index.php?action=register">
 				<p><label for="login">Pseudo: </label><input type="text" name="login" id="login" required /></p>
 				<p><label for="email">Email: </label><input type="text" name="email" id="email" required /></p>

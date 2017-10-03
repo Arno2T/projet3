@@ -13,21 +13,23 @@ class controllerWritePosts
 		$this->_post=new PostsManager();
 	}
 
-
+	//allows to add a new post
 	public function newPost($title, $content, $category)
 	{
-		$this->_post->insertPost($title, $content, $category);
+		$post=$this->_post->datasPost($title, $content, $category);
+		$this->_post->insertPost($post);
 	}
 	
+	//displays page for updating a new post
 	public function showPost($idPost)
 	{	
 		if (isset($idPost))
 		{	
 			$module="Posts";
 			$id='&id='.$_GET['id'];
-			$post= $this->_post->getPost($idPost);
-			$content = $post['content'];
-			$title = $post['title'];
+			$post= $this->_post->getPostToUpdate($idPost);
+			$content=$post->getContent();
+			$title =$post->getTitle();
 			$view= new View('WritePosts');
 			$view->generateAdmin(array('module'=>$module, 'id'=>$id, 'content'=>$content, 'title'=>$title));
 		}
@@ -42,11 +44,15 @@ class controllerWritePosts
 		}
 	}
 
+	//allows to update a post
 	public function updatePost($title, $content, $category, $id)
 	{
-		$this->_post->updatePost($title, $content, $category, $id);
+		$post=$this->_post->datasUpdate($title, $content, $category, $id);
+		$this->_post->updatePost($post);
 	}
 
+
+	//displays page for writing a post
 	public function writeNewPost()
 	{	
 		$module="new";

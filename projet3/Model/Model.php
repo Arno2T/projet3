@@ -16,7 +16,14 @@ class Model
 
 	public function getBdd()
 	{
-		$this->_bdd= new PDO('mysql: host=localhost; dbname=p3_blog; charset=utf8', 'root', 'root', array(PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION));
+		try
+		{
+		$this->_bdd= new PDO('mysql: host=localhost; dbname=p3blog; charset=utf8', 'root', 'root', array(PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION));
 		return $this->_bdd;
+		}
+		catch (Exception $e)
+		{
+			die('Erreur :'.$e->getMessage());
+		}
 	}
 }

@@ -4,6 +4,7 @@
 * Manages connection to database
 **/
 require_once 'Model.php';
+require_once 'Posts.php';
 
 class PostsManager
 {
@@ -27,42 +28,64 @@ class PostsManager
 		
 	}
 
-	// Read 
+	// --- READ --- //
 
 	//get all posts
 
 	public function getAllPosts()
 	{
-		$req=$this->_bdd->query('SELECT id, title_post AS title, content_post AS content, DATE_FORMAT(date_post, "%d/%m/%Y %Hh%imin%ss") AS date_post, category FROM Posts ORDER BY id DESC');
+		$req=$this->_bdd->query('SELECT id, title_post AS title, content_post AS content, DATE_FORMAT(date_post, "%d/%m/%Y %Hh%imin%ss") AS date, category FROM Posts ORDER BY id DESC');
 
-		return $req;
+		while($datas= $req->fetch(PDO::FETCH_ASSOC))
+			{
+				$posts[]= new Posts($datas);
+			}
+
+		return $posts;
 	}
 
 	// get all posts by category
 	public function getAllPostsByCat($category)
 	{
-		$req=$this->_bdd->prepare('SELECT id, title_post AS title, content_post AS content, DATE_FORMAT(date_post, "%d/%m/%Y %Hh%imin%ss") AS date_post, category FROM Posts WHERE category=:category ORDER BY id DESC');
-		$req->bindValue(':category', $category, PDO::PARAM_STR);
-		$req->execute();
-
-		return $req;
+		$category=(string) $category;
+		 
+		$req=$this->_bdd->query('SELECT id, title_post AS title, content_post AS content, DATE_FORMAT(date_post, "%d/%m/%Y %Hh%imin%ss") AS date, category FROM Posts WHERE category="'.$category.'"ORDER BY id DESC');
+		while($datas=$req->fetch(PDO::FETCH_ASSOC))
+		{
+			$posts[]=new Posts($datas);
+		}
+		return $posts;
 
 	}
 
 	// get one post by id
 	public function getPost($idPost)
 	{	
-		if (isset($_GET['id']))
-		{
-		$req=$this->_bdd->query('SELECT id, title_post AS title, content_post AS content, DATE_FORMAT(date_post, "%d/%m/%Y %Hh%imin%ss") AS date_post FROM Posts WHERE id='.$_GET['id']);
+		
+			$idPost=(int) $idPost;
+			$req=$this->_bdd->query('SELECT id, title_post AS title, content_post AS content, DATE_FORMAT(date_post, "%d/%m/%Y %Hh%imin%ss") AS date FROM Posts WHERE id='.$idPost);
 
-		$result= $req->fetch(PDO::FETCH_ASSOC);
+			//while ($datas=$req->fetch(PDO::FETCH_ASSOC))
+			//{
+				$datas=$req->fetch(PDO::FETCH_ASSOC);
+				$post[]=new Posts($datas);
+			//}
 
-		return $result;
-		}
+			return $post;
+	}
+
+	public function getPostToUpdate($idPost)
+	{
+		$idPost=(int) $idPost;
+		$req=$this->_bdd->query('SELECT id, title_post AS title, content_post AS content, DATE_FORMAT(date_post, "%d/%m/%Y %Hh%imin%ss") AS date FROM Posts WHERE id='.$idPost);
+
+		$datas=$req->fetch(PDO::FETCH_ASSOC);
+		$post=new Posts($datas);
+		return $post;
 
 	}
 
+	 // count all posts (home, stories,...)
 	public function countPosts()
 	{
 		$req= $this->_bdd->query('SELECT Count(*) AS nbPosts FROM Posts');
@@ -73,53 +96,71 @@ class PostsManager
 		return $nbPosts;
 	}
 
-	// Create 
+	//----- CREATE ---- // 
 
 
-
-	public function insertPost($title, $content, $category)
+	 //insert a post
+	public function datasPost($title, $content,$category)
 	{
-		$req= $this->_bdd->prepare('INSERT INTO Posts (title_post, content_post, date_post, id_users, category) VALUES (:title, :content, NOW(), :idUsers, :category)');
-		$req->bindValue(':title', $title, PDO::PARAM_STR);
-		$req->bindValue(':content', $content, PDO::PARAM_STR);
-		$req->bindValue(':idUsers', 12);
-		$req->bindValue(':category', $category, PDO::PARAM_STR);
+		$datas= array('title'=>$title, 'content'=>$content, 'category'=>$category);
+		$post= new Posts($datas);
+		return $post;
+	}
+	public function insertPost(Posts $post)
+	{
+		$req= $this->_bdd->prepare('INSERT INTO Posts (title_post, content_post, date_post, category) VALUES (:title, :content, NOW(), :category)');
+		$req->bindValue(':title', $post->getTitle(), PDO::PARAM_STR);
+		$req->bindValue(':content', $post->getContent(), PDO::PARAM_STR);
+		$req->bindValue(':category', $post->getCategory(), PDO::PARAM_STR);
 
 		$result=$req->execute();
-		var_dump($result);
 
-		
 		return $result;
 
 	}
 
 
-	//UPDATE
-	public function updatePost($title, $content, $category, $id)
+	//---- UPDATE ----//
+
+	//update a post
+
+	public function datasUpdate($id, $title, $content, $category)
+	{
+		$datas= array('id'=>$id, 'title'=>$title, 'content'=>$content, 'category'=>$category);
+		$post= new Posts($datas);
+		return $post;
+	}
+
+	//update a post
+	public function updatePost(Posts $post)
 	{
 		$req=$this->_bdd->prepare('UPDATE Posts SET title_post=:title, content_post=:content, category=:category WHERE id=:id');
-		$req->bindValue(':title', $title, PDO::PARAM_STR);
-		$req->bindValue(':content', $content, PDO::PARAM_STR);
-		$req->bindValue(':category', $category, PDO::PARAM_STR);
-		$req->bindValue(':id', $id, PDO::PARAM_INT);
+		$req->bindValue(':title', $post->getTitle(), PDO::PARAM_STR);
+		$req->bindValue(':content', $post->getContent(), PDO::PARAM_STR);
+		$req->bindValue(':category', $post->getCategory(), PDO::PARAM_STR);
+		$req->bindValue(':id', $post->getId(), PDO::PARAM_INT);
 		$req->execute();
 		
 		return $req;
 	}
 
 
-	//DELETE
+	//---- DELETE ----//
 
-	public function deletePost($idPost)
+	//delete a post
+
+	public function datasDelete($idPost)
+	{
+		$datas= array('id'=>$idPost);
+		$post=new Posts($datas);
+		return $post;
+	}
+	public function deletePost(Posts $post)
 	{
 		$req= $this->_bdd->prepare('DELETE FROM Posts WHERE id=:id ');
-		$req->bindValue(':id', $idPost, PDO::PARAM_INT);
+		$req->bindValue(':id', $post->getId(), PDO::PARAM_INT);
 		$req->execute();
 	}
-
-
-
-
 
 	
 }
